@@ -1,0 +1,32 @@
+[
+	{
+		"name": "Boy",
+		"studentID": "62130500212",
+		"score": 0,
+		"room": "5000"
+	},
+	{
+		"name": "Golf",
+		"studentID": "62130500213",
+		"score": 0,
+		"room": "8080"
+	},
+	{
+		"name": "Z",
+		"studentID": "62130500230",
+		"score": 0,
+		"room": "8080"
+	},
+	{
+		"name": "Note",
+		"studentID": "62130500209",
+		"score": 0,
+		"room": "4433"
+	},
+	{
+		"name": "Ching",
+		"studentID": "62130500255",
+		"score": 0,
+		"room": "3000"
+	},
+]
