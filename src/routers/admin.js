@@ -29,6 +29,28 @@ router.post('/admin/login', async (req, res) => {
     }
 });
 
+router.post('/admin/logout', auth, async (req, res) => {
+    try {
+        req.admin.tokens = req.admin.tokens.filter((token) => {
+            return token.token !== req.token;
+        })
+        await req.admin.save();
+        res.send();
+    } catch (err) {
+        res.status(500).send();
+    }
+});
+
+router.post('/admin/logoutAll', auth, async (req, res) => {
+    try {
+        req.admin.tokens = [];
+        await req.admin.save();
+        res.send();
+    } catch (err) {
+        res.status(500).send();
+    }
+});
+
 router.get('/admin/profile', auth, async (req, res) => {
     res.send(req.admin);
 });
