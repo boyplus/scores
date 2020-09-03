@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
-import Landing from './Landing';
+import Header from './Header';
+import Landing from './Landing/Landing';
 import Room from './room/Room';
 const ENDPOINT = 'http://127.0.0.1:5000';
 
@@ -22,6 +23,7 @@ class App extends React.Component {
         return (
             <BrowserRouter>
                 <div>
+                    <Header></Header>
                     <Route exact path="/" component={Landing}></Route>
                     <Route path="/room/:id" component={Room}></Route>
                 </div>
