@@ -3,10 +3,12 @@ require('./db/mongoose');
 const http = require('http');
 const socketIo = require('socket.io');
 const adminRouter = require('./routers/admin');
+const roomRouter = require('./routers/room');
 
 const app = express();
 app.use(express.json());
 app.use(adminRouter);
+app.use(roomRouter);
 
 const server = http.createServer(app);
 

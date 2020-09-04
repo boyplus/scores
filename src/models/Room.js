@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
-const StudentSchema = require('./Student');
 
 const roomSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    students: [StudentSchema],
+    students: { type: Array, required: false },
     owners: { type: Array, required: true },
 });
 
