@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const Room = require('../models/Room');
+const Student = require('../models/Student');
 const auth = require('../middlewares/auth');
-const room = require('../middlewares/room');
 
 router.get('/api/allRooms', async (req, res) => {
     try {
@@ -37,13 +38,14 @@ router.patch('/api/room/:id', auth, async (req, res) => {
         });
         if (!isValidOperation)
             return res.status(400).send({ err: 'Invalid operation' });
-        const room = await Room.findOne({ _id, owners: req.admin._id });
-        if (!room) {
+        const room = await Room.findById(_id);
+        if (!room.owners.includes(req.admin._id)) {
             return res.status(400).send({ err: 'You did not own this room!' });
         }
         updates.forEach((update) => {
             if (update === 'owner' || update === 'student') {
-                room[update] = room[update].push(req.body[update]);
+                const newId = mongoose.Types.ObjectId(req.body[update]);
+                room[update + 's'].push(newId);
             } else {
                 room[update] = req.body[update];
             }
@@ -58,7 +60,9 @@ router.patch('/api/room/:id', auth, async (req, res) => {
 router.get('/api/room/:id', async (req, res) => {
     try {
         const _id = req.params.id;
-        const room = await Room.findById(_id);
+        const room = await Room.findById(_id).lean();
+        const students = await Student.find({ room: _id });
+        room.students = students;
         res.send(room);
     } catch (err) {
         res.status(400).send();

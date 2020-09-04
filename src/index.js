@@ -4,11 +4,13 @@ const http = require('http');
 const socketIo = require('socket.io');
 const adminRouter = require('./routers/admin');
 const roomRouter = require('./routers/room');
+const studentRouter = require('./routers/student');
 
 const app = express();
 app.use(express.json());
 app.use(adminRouter);
 app.use(roomRouter);
+app.use(studentRouter);
 
 const server = http.createServer(app);
 

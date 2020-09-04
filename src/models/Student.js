@@ -3,8 +3,8 @@ const { Schema } = mongoose;
 
 const studentSchema = new Schema({
     name: { type: String, required: true },
-    score: { type: Number, required: true, default: 0 },
-    _room: { type: Schema.Types.ObjectId, ref: 'Room' },
+    score: { type: Number, default: 0 },
+    room: { type: Schema.Types.ObjectId, ref: 'Room', required: true },
 });
 
 const Student = new mongoose.model('Student', studentSchema);
