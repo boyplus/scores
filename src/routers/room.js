@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Room = require('../models/Room');
 const Student = require('../models/Student');
 const auth = require('../middlewares/auth');
+const ownRoom = require('../middlewares/ownRoom');
 
 router.get('/api/allRooms', async (req, res) => {
     try {
@@ -28,9 +29,8 @@ router.post('/api/room', auth, async (req, res) => {
     }
 });
 
-router.patch('/api/room/:id', auth, async (req, res) => {
+router.patch('/api/room/:id', auth, ownRoom, async (req, res) => {
     try {
-        const _id = req.params.id;
         const updates = Object.keys(req.body);
         const allowUpdated = ['owner', 'student', 'name'];
         const isValidOperation = updates.every((update) => {
@@ -38,20 +38,16 @@ router.patch('/api/room/:id', auth, async (req, res) => {
         });
         if (!isValidOperation)
             return res.status(400).send({ err: 'Invalid operation' });
-        const room = await Room.findById(_id);
-        if (!room.owners.includes(req.admin._id)) {
-            return res.status(400).send({ err: 'You did not own this room!' });
-        }
         updates.forEach((update) => {
             if (update === 'owner' || update === 'student') {
                 const newId = mongoose.Types.ObjectId(req.body[update]);
-                room[update + 's'].push(newId);
+                req.room[update + 's'].push(newId);
             } else {
-                room[update] = req.body[update];
+                req.room[update] = req.body[update];
             }
         });
-        await room.save();
-        res.send(room);
+        await req.room.save();
+        res.send(req.room);
     } catch (err) {
         res.status(500).send(err);
     }
