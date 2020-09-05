@@ -15,6 +15,27 @@ router.get('/api/allRooms', async (req, res) => {
     }
 });
 
+router.get('/api/room/:id', async (req, res) => {
+    try {
+        const _id = req.params.id;
+        const room = await Room.findById(_id).lean();
+        const students = await Student.find({ room: _id });
+        room.students = students;
+        res.send(room);
+    } catch (err) {
+        res.status(400).send();
+    }
+});
+
+router.get('/api/myRooms', auth, async (req, res) => {
+    try {
+        const rooms = await Room.find({ owners: req.admin._id });
+        res.send(rooms);
+    } catch (err) {
+        res.status(500).send();
+    }
+});
+
 router.post('/api/room', auth, async (req, res) => {
     try {
         const room = new Room({
@@ -53,22 +74,11 @@ router.patch('/api/room/:id', auth, ownRoom, async (req, res) => {
     }
 });
 
-router.get('/api/room/:id', async (req, res) => {
+router.delete('/api/room/:id', async (req, res) => {
     try {
-        const _id = req.params.id;
-        const room = await Room.findById(_id).lean();
-        const students = await Student.find({ room: _id });
-        room.students = students;
+        const room = await Room.findById(req.params.id);
+        await room.remove();
         res.send(room);
-    } catch (err) {
-        res.status(400).send();
-    }
-});
-
-router.get('/api/myRooms', auth, async (req, res) => {
-    try {
-        const rooms = await Room.find({ owners: req.admin._id });
-        res.send(rooms);
     } catch (err) {
         res.status(500).send();
     }
