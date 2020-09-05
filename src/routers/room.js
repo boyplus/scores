@@ -69,4 +69,13 @@ router.get('/api/room/:id', async (req, res) => {
     }
 });
 
+router.get('/api/myRooms', auth, async (req, res) => {
+    try {
+        const rooms = await Room.find({ owners: req.admin._id });
+        res.send(rooms);
+    } catch (err) {
+        res.status(500).send();
+    }
+});
+
 module.exports = router;
