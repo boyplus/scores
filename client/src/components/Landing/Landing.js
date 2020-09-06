@@ -1,37 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../../axios/axios';
 
 class Landing extends React.Component {
     state = { room: '', username: '', password: '' };
     roomChange = (e) => {
         this.setState({ room: e.target.value });
     };
-    async componentDidMount() {
-        // const res = await axios.get('/api/admin/profile', { withCredentials: true });
-        // console.log(res);
-    }
     onSubmit = async () => {
         const body = {
             username: this.state.username,
             password: this.state.password,
         };
-        const res = await axios.post('/api/admin/login', body);
-        localStorage.setItem('jwt', res.data.token);
-        const token = localStorage.getItem('jwt');
-
-        axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
-        const admin = await axios.get('/api/admin/profile');
-        console.log(admin);
+        const res = await axios.post('/admin/login', body);
+        console.log(res);
     };
     fetchAdmin = async () => {
-        const res = await axios.get('/api/admin/profile');
+        const res = await axios.get('/admin/profile');
         console.log(res);
     };
     onLogout = async () => {
-        await axios.post('/api/admin/logout');
+        await axios.post('/admin/logout');
         console.log('logout complete');
-    }
+    };
     render() {
         return (
             <div>

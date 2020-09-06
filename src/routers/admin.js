@@ -3,10 +3,6 @@ const router = express.Router();
 const Admin = require('../models/Admin');
 const auth = require('../middlewares/auth');
 
-router.get('/test', async (req, res) => {
-    res.send('hello world');
-});
-
 router.post('/api/admin', async (req, res) => {
     const admin = new Admin(req.body);
     try {
@@ -23,6 +19,7 @@ router.post('/api/admin/login', async (req, res) => {
         const { username, password } = req.body;
         const admin = await Admin.findbyCredentials(username, password);
         const token = await admin.generateAuthToken();
+        res.cookie('token', token, { httpOnly: true });
         res.status(201).send({ admin, token });
     } catch (err) {
         res.status(400).send(err);

@@ -4,7 +4,7 @@ const keys = require('../config/keys');
 
 const auth = async (req, res, next) => {
     try {
-        const token = req.header('Authorization').replace('Bearer ', '');
+        const token = req.cookies.token;
         const decode = jwt.verify(token, keys.jwtSecret);
         const admin = await Admin.findOne({
             _id: decode._id,
