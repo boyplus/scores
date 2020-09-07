@@ -28,14 +28,6 @@ export const logout = (history) => async (dispatch) => {
     } catch (err) {}
 };
 
-export const fetchAllRooms = () => async (dispatch) => {
-    try {
-        
-    } catch (err) {
-
-    }
-};
-
 export const updateRoute = (route) => {
     return {
         type: UPDATE_ROUTE,

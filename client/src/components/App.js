@@ -8,6 +8,7 @@ import * as actions from '../actions';
 import Header from './Header';
 import Login from './Login';
 import Landing from './Landing/Landing';
+import Room from './room/Room';
 import AdminRooms from './room/AdminRooms';
 import AdminStudents from './student/AdminStudents';
 
@@ -23,8 +24,12 @@ class App extends React.Component {
                     <Header></Header>
                     <Route exact path="/" component={Landing}></Route>
                     <Route path="/login" component={Login}></Route>
+                    <Route path="/room/:id" component={Room}></Route>
                     <Route path="/admin/rooms" component={AdminRooms}></Route>
-                    <Route path="/admin/students" component={AdminStudents}></Route>
+                    <Route
+                        path="/admin/students"
+                        component={AdminStudents}
+                    ></Route>
                 </div>
             </BrowserRouter>
         );

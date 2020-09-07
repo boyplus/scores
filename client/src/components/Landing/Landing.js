@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import axios from '../../axios/axios';
-import Room from './Room';
+import RoomCard from './RoomCard';
 import * as actions from '../../actions';
 
 class Landing extends React.Component {
@@ -10,12 +10,18 @@ class Landing extends React.Component {
         this.props.updateRoute(this.props.match.path);
         const res = await axios.get('/allRooms');
         this.setState({ rooms: res.data });
-        console.log(res.data);
+        console.log(this.props);
     }
-    
+
     renderRooms() {
         const rooms = this.state.rooms.map((room) => {
-            return <Room room={room}></Room>;
+            return (
+                <RoomCard
+                    room={room}
+                    key={room._id}
+                    history={this.props.history}
+                ></RoomCard>
+            );
         });
         return <div className="row">{rooms}</div>;
     }

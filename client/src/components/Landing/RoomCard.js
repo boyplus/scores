@@ -1,10 +1,13 @@
 import React from 'react';
 import '../styles/room.css';
 
-class Room extends React.Component {
+class RoomCard extends React.Component {
     state = { hover: false };
     toggleHover() {
         this.setState({ hover: !this.state.hover });
+    }
+    enterRoom(id) {
+        this.props.history.push('/room/' + id);
     }
     render() {
         let viewTextStyle = {
@@ -19,9 +22,9 @@ class Room extends React.Component {
             <div
                 className="col-lg-3 col-sm-6"
                 style={{ padding: '20px' }}
-                key={this.props.room._id}
                 onMouseEnter={() => this.toggleHover()}
                 onMouseLeave={() => this.toggleHover()}
+                onClick={() => this.enterRoom(this.props.room._id)}
             >
                 <div className="roomCard">
                     <h1 style={{ padding: '15px', color: 'white' }}>
@@ -33,7 +36,7 @@ class Room extends React.Component {
                             justifyContent: 'flex-end',
                         }}
                     >
-                        <h4 style={viewTextStyle}>View Scorebard</h4>
+                        <h4 style={viewTextStyle}>View Score Board</h4>
                     </div>
                 </div>
             </div>
@@ -41,4 +44,4 @@ class Room extends React.Component {
     }
 }
 
-export default Room;
+export default RoomCard;

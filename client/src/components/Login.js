@@ -44,7 +44,6 @@ class Login extends React.Component {
     async login(e) {
         e.preventDefault();
         this.validation();
-        console.log(this.props);
         if (this.canSubmit()) {
             await this.props.login(
                 this.state.username,
