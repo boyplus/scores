@@ -12,3 +12,9 @@
     display: flex;
     flex-direction: column;
 }
+
+.errorText{
+    color: red;
+    margin-top: 3px;
+    font-size: 15px;
+}

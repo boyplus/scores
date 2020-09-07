@@ -5,9 +5,19 @@ import axios from '../axios/axios';
 import * as actions from '../actions';
 import './styles/header.css';
 
+import history from '../history';
 class Header extends React.Component {
+    async componentDidMount() {
+        console.log('Fetch user in header');
+        await this.props.fetchUser();
+    }
     async logout() {
         await this.props.logout();
+    }
+    go() {
+        console.log(this.props);
+        history.push('/room');
+        console.log(history);
     }
     renderProfile() {
         if (this.props.auth) {
@@ -16,7 +26,9 @@ class Header extends React.Component {
                     <div style={{ padding: '8px' }}>
                         Hello, {this.props.auth.name}
                     </div>
-                    <div className="link">My Rooms</div>
+                    <div className="link" onClick={() => this.go()}>
+                        My Rooms
+                    </div>
                     <div className="link" onClick={() => this.logout()}>
                         Logout <i className="sign-out icon"></i>
                     </div>

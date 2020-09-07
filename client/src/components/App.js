@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Router, Route, BrowserRouter, Link, Switch } from 'react-router-dom';
+
 import { connect } from 'react-redux';
 import socketIOClient from 'socket.io-client';
 
@@ -12,19 +13,17 @@ import './style.css';
 const ENDPOINT = 'http://127.0.0.1:5000';
 
 class App extends React.Component {
-    async componentDidMount() {
-        await this.props.fetchUser();
-    }
+    async componentDidMount() {}
     render() {
         return (
-            <BrowserRouter>
-                <div className="ui container">
-                    <Header></Header>
-                    <Route exact path="/login" component={Login}></Route>
+            <div className="ui container">
+                <Header></Header>
+                <Switch>
                     <Route exact path="/" component={Landing}></Route>
-                    <Route path="/room/:id" component={Room}></Route>
-                </div>
-            </BrowserRouter>
+                    <Route path="/login" component={Login}></Route>
+                    <Route path="/room" component={Room}></Route>
+                </Switch>
+            </div>
         );
     }
 }
