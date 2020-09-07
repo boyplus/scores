@@ -16,25 +16,36 @@ app.use(studentRouter);
 
 const server = http.createServer(app);
 
-const io = socketIo(server);
+// const io = socketIo(server);
 
-io.on('connection', (socket) => {
-    console.log('New client connected');
-    socket.on('disconnect', () => {
-        console.log('Client disconnected');
-    });
+// io.on('connection', (socket) => {
+//     console.log('New client connected');
+//     socket.on('disconnect', () => {
+//         console.log('Client disconnected');
+//     });
 
-    socket.on('joinRoom', (data) => {
-        const { room, user } = data;
-        console.log('user ', user, ' join room ', room);
-        socket.join(room);
-    });
+//     socket.on('joinRoom', (data) => {
+//         const { room, user } = data;
+//         console.log('user ', user, ' join room ', room);
+//         socket.join(room);
+//     });
 
-    socket.on('increase', (data) => {
-        const { room, student } = data;
-        io.to(room).emit('newNumber', { room, student });
+//     socket.on('increase', (data) => {
+//         const { room, student } = data;
+//         io.to(room).emit('newNumber', { room, student });
+//     });
+// });
+
+if (process.env.NODE_ENV === 'production') {
+    console.log('Start node server in production');
+    app.use(express.static('client/build'));
+    const path = require('path');
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     });
-});
+} else {
+    console.log('Start node server in development');
+}
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
