@@ -1,19 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import axios from '../../axios/axios';
 import * as actions from '../../actions';
 
-class Landing extends React.Component {
+class AdminRooms extends React.Component {
     componentDidMount() {
         this.props.updateRoute(this.props.match.path);
     }
     render() {
         return (
             <div>
-                <h1>This is Landing</h1>
+                <h1>Your rooms</h1>
             </div>
         );
     }
 }
 
-export default connect(null, actions)(Landing);
+export default connect(null, actions)(AdminRooms);

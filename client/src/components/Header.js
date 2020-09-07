@@ -5,19 +5,15 @@ import axios from '../axios/axios';
 import * as actions from '../actions';
 import './styles/header.css';
 
-import history from '../history';
 class Header extends React.Component {
     async componentDidMount() {
-        console.log('Fetch user in header');
         await this.props.fetchUser();
     }
     async logout() {
         await this.props.logout();
     }
-    go() {
-        console.log(this.props);
-        history.push('/room');
-        console.log(history);
+    getClass(e) {
+        return e === this.props.route.route ? 'link active' : 'link';
     }
     renderProfile() {
         if (this.props.auth) {
@@ -26,21 +22,35 @@ class Header extends React.Component {
                     <div style={{ padding: '8px' }}>
                         Hello, {this.props.auth.name}
                     </div>
-                    <div className="link" onClick={() => this.go()}>
-                        My Rooms
-                    </div>
+
+                    <Link
+                        to="/admin/rooms"
+                        className={this.getClass('/admin/rooms')}
+                    >
+                        <i className="bookmark icon"></i> Rooms
+                    </Link>
+
+                    <Link
+                        to="/admin/students"
+                        className={this.getClass('/admin/students')}
+                    >
+                        <i className="users icon"></i> Students
+                    </Link>
+
                     <div className="link" onClick={() => this.logout()}>
-                        Logout <i className="sign-out icon"></i>
+                        <i className="sign-out icon"></i> Logout
                     </div>
                 </div>
             );
         } else {
             return (
                 <div style={{ display: 'flex' }}>
-                    <Link to="/login" className="link">
-                        Login <i className="sign-in icon"></i>
+                    <Link to="/login" className={this.getClass('/login')}>
+                        <i className="sign-in icon"></i> <span>Login</span>
                     </Link>
-                    <div className="link">Register</div>
+                    <div className="link">
+                        <span>Register</span>
+                    </div>
                 </div>
             );
         }
@@ -48,7 +58,7 @@ class Header extends React.Component {
     render() {
         return (
             <div className="nav">
-                <Link to="/" className="link">
+                <Link to="/" className={this.getClass('/')}>
                     Score Board
                 </Link>
                 <div>{this.renderProfile()}</div>
@@ -60,6 +70,7 @@ class Header extends React.Component {
 function mapStateToProps(state) {
     return {
         auth: state.auth,
+        route: state.route,
     };
 }
 

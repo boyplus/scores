@@ -6,6 +6,7 @@ import './styles/login.css';
 class Login extends React.Component {
     state = { username: '', password: '', usernameErr: '', passwordErr: '' };
     componentDidMount() {
+        this.props.updateRoute(this.props.match.path);
         this.username.focus();
     }
     componentDidUpdate(prevProps, prevState) {
@@ -45,7 +46,11 @@ class Login extends React.Component {
         this.validation();
         console.log(this.props);
         if (this.canSubmit()) {
-            await this.props.login(this.state.username, this.state.password);
+            await this.props.login(
+                this.state.username,
+                this.state.password,
+                this.props.history
+            );
         } else {
         }
     }

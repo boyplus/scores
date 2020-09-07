@@ -15,6 +15,11 @@
     transition: 0.25s;
 }
 .link:hover {
-    color: #00004d;
     transition: 0.25s;
+    color: rgb(0, 44, 86);
+}
+
+.active {
+    font-weight: 600;
+    color: rgb(0, 58, 112);
 }
