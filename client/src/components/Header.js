@@ -1,31 +1,54 @@
 import React from 'react';
-import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import axios from '../axios/axios';
+import * as actions from '../actions';
 import './styles/header.css';
 
 class Header extends React.Component {
-    async componentDidMount() {
-        // const token = localStorage.getItem('jwt');
-        // axios.defaults.headers.common = {
-        //     Authorization: `Bearer ${token}`,
-        // };
-        // try {
-        //     const admin = await axios.get('/api/admin/profile');
-        //     console.log(admin);
-        // } catch (err) {
-        //     console.log('You are not logged in');
-        // }
+    async logout() {
+        await this.props.logout();
     }
     renderProfile() {
-        
+        if (this.props.auth) {
+            return (
+                <div style={{ display: 'flex' }}>
+                    <div style={{ padding: '8px' }}>
+                        Hello, {this.props.auth.name}
+                    </div>
+                    <div className="link">My Rooms</div>
+                    <div className="link" onClick={() => this.logout()}>
+                        Logout <i className="sign-out icon"></i>
+                    </div>
+                </div>
+            );
+        } else {
+            return (
+                <div style={{ display: 'flex' }}>
+                    <Link to="/login" className="link">
+                        Login <i className="sign-in icon"></i>
+                    </Link>
+                    <div className="link">Register</div>
+                </div>
+            );
+        }
     }
     render() {
         return (
             <div className="nav">
-                {this.renderProfile()}
-                <div>hello</div>
+                <Link to="/" className="link">
+                    Score Board
+                </Link>
+                <div>{this.renderProfile()}</div>
             </div>
         );
     }
 }
 
-export default Header;
+function mapStateToProps(state) {
+    return {
+        auth: state.auth,
+    };
+}
+
+export default connect(mapStateToProps, actions)(Header);

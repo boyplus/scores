@@ -24,38 +24,7 @@ class Landing extends React.Component {
         console.log('logout complete');
     };
     render() {
-        return (
-            <div>
-                <label>Username: </label>
-                <input
-                    type="text"
-                    onChange={(e) => {
-                        this.setState({ username: e.target.value });
-                    }}
-                ></input>
-                <label>Password: </label>
-                <input
-                    type="password"
-                    onChange={(e) => {
-                        this.setState({ password: e.target.value });
-                    }}
-                ></input>
-                <button onClick={this.onSubmit}>Login</button>
-                <button onClick={this.fetchAdmin}>Get Profile</button>
-                <button onClick={this.onLogout}>Logout</button>
-                <label>Room Number: </label>
-                <input
-                    type="text"
-                    onChange={(e) => {
-                        this.roomChange(e);
-                    }}
-                    value={this.state.room}
-                ></input>
-                <button>
-                    <Link to={`/room/${this.state.room}`}>Join Room</Link>
-                </button>
-            </div>
-        );
+        return <div></div>;
     }
 }
 
