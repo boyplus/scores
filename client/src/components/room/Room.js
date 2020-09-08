@@ -70,11 +70,35 @@ class Room extends React.Component {
             return <div className="row">{students}</div>;
         }
     }
+    renderAddStudent() {
+        if (this.state.isOwn) {
+            const id = this.props.match.params.id;
+            const path = `/new/student/${id}`;
+            return (
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        marginTop: '50px',
+                    }}
+                >
+                    <Link to={path}>
+                        <button className="ui primary button">
+                            Add New Student
+                        </button>
+                    </Link>
+                </div>
+            );
+        } else {
+            return null;
+        }
+    }
     render() {
         return (
             <div>
                 {this.renderTitle()}
                 {this.renderStudent()}
+                {this.renderAddStudent()}
             </div>
         );
     }

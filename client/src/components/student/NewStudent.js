@@ -33,10 +33,11 @@ class NewRoom extends React.Component {
         e.preventDefault();
         this.validation();
         if (this.canSubmit()) {
-            const body = { name: this.state.name };
-            const res = await axios.post('/room', body);
+            const id = this.props.match.params.id;
+            const body = { name: this.state.name, room: id };
+            const res = await axios.post('/student', body);
             if (res.status === 201) {
-                this.props.history.push('/');
+                this.props.history.push(`/room/${id}`);
             }
         }
     }
@@ -53,15 +54,12 @@ class NewRoom extends React.Component {
                 }}
             >
                 <div className="loginCard">
-                    <h1 style={{ textAlign: 'center' }}>Add New Room</h1>
-                    <form
-                        onSubmit={(e) => this.newRoom(e)}
-                        className="loginForm"
-                    >
+                    <h1 style={{ textAlign: 'center' }}>Add New Student</h1>
+                    <form onSubmit={(e) => this.login(e)} className="loginForm">
                         <div className="ui input">
                             <input
                                 type="text"
-                                placeholder="Room name"
+                                placeholder="Student name"
                                 ref={(input) => {
                                     this.name = input;
                                 }}

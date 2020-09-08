@@ -11,6 +11,7 @@ import Register from './Register';
 import Landing from './Landing/Landing';
 import Room from './room/Room';
 import NewRoom from './room/NewRoom';
+import NewStudent from './student/NewStudent';
 
 import './style.css';
 const ENDPOINT = 'http://127.0.0.1:5000';
@@ -27,6 +28,10 @@ class App extends React.Component {
                     <Route path="/register" component={Register}></Route>
                     <Route path="/room/:id" component={Room}></Route>
                     <Route path="/new/room" component={NewRoom}></Route>
+                    <Route
+                        path="/new/student/:id"
+                        component={NewStudent}
+                    ></Route>
                 </div>
             </BrowserRouter>
         );
