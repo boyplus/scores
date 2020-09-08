@@ -10,7 +10,6 @@ class Landing extends React.Component {
         this.props.updateRoute(this.props.match.path);
         const res = await axios.get('/allRooms');
         this.setState({ rooms: res.data });
-        console.log(this.props);
     }
 
     renderRooms() {
@@ -28,7 +27,9 @@ class Landing extends React.Component {
     render() {
         return (
             <div>
-                <h1>Rooms</h1>
+                <h1 style={{ paddingTop: '10px', fontWeight: 'bold' }}>
+                    Rooms
+                </h1>
                 {this.renderRooms()}
             </div>
         );

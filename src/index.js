@@ -36,7 +36,7 @@ const server = http.createServer(app);
 //     });
 // });
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' || true) {
     console.log('Start node server in production');
     app.use(express.static('client/build'));
     const path = require('path');

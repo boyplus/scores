@@ -36,9 +36,9 @@ class Header extends React.Component {
                         <i className="users icon"></i> Students
                     </Link>
 
-                    <div className="link" onClick={() => this.logout()}>
+                    <Link className="link" onClick={() => this.logout()}>
                         <i className="sign-out icon"></i> Logout
-                    </div>
+                    </Link>
                 </div>
             );
         } else {

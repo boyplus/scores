@@ -20,6 +20,16 @@
     margin-right: 10px;
 }
 
-#viewText:hover {
-    color: black;
+#roomHeader {
+    color: #434343;
+}
+
+#roomHeader:hover {
+    cursor: pointer;
+}
+
+#roomTitle {
+    display: flex;
+    padding-top: 10px;
+    align-items: center;
 }

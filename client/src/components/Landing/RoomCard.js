@@ -16,7 +16,7 @@ class RoomCard extends React.Component {
             marginRight: '10px',
         };
         if (this.state.hover) {
-            viewTextStyle.color = 'black';
+            viewTextStyle.color = 'whitesmoke';
         }
         return (
             <div
