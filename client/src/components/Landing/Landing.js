@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import axios from '../../axios/axios';
 import Loading from '../Loading';
 import RoomCard from './RoomCard';
@@ -28,6 +29,26 @@ class Landing extends React.Component {
         });
         return <div className="row">{rooms}</div>;
     }
+    renderAddRoom() {
+        if (this.props.auth) {
+            return (
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        marginTop: '50px',
+                    }}
+                >
+                    <Link to="/new/room">
+                        <button className="ui primary button">
+                            Add New Room
+                        </button>
+                    </Link>
+                </div>
+            );
+        }
+        return null;
+    }
     render() {
         return (
             <div>
@@ -35,9 +56,14 @@ class Landing extends React.Component {
                     Rooms
                 </h1>
                 {this.renderRooms()}
+                {this.renderAddRoom()}
             </div>
         );
     }
 }
 
-export default connect(null, actions)(Landing);
+const mapStateToProps = (state) => {
+    return { auth: state.auth };
+};
+
+export default connect(mapStateToProps, actions)(Landing);

@@ -4,9 +4,7 @@ import { FETCH_USER, LOGIN, LOGOUT, UPDATE_ROUTE } from './types';
 export const fetchUser = () => async (dispatch) => {
     try {
         const res = await axios.get('/admin/profile');
-        const rooms = await axios.get('/myRooms');
-        const payload = { ...res.data, rooms: rooms.data };
-        dispatch({ type: FETCH_USER, payload });
+        dispatch({ type: FETCH_USER, payload: res.data });
     } catch (err) {
         dispatch({ type: FETCH_USER, payload: null });
     }
@@ -15,9 +13,7 @@ export const fetchUser = () => async (dispatch) => {
 export const login = (username, password, history) => async (dispatch) => {
     try {
         const res = await axios.post('/admin/login', { username, password });
-        const rooms = await axios.get('/myRooms');
-        const payload = { ...res.data.admin, rooms: rooms.data };
-        dispatch({ type: LOGIN, payload });
+        dispatch({ type: LOGIN, payload: res.data.admin });
         history.push('/');
     } catch (err) {
         dispatch({ type: LOGIN, payload: null });

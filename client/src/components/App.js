@@ -10,6 +10,7 @@ import Login from './Login';
 import Register from './Register';
 import Landing from './Landing/Landing';
 import Room from './room/Room';
+import NewRoom from './room/NewRoom';
 
 import './style.css';
 const ENDPOINT = 'http://127.0.0.1:5000';
@@ -25,6 +26,7 @@ class App extends React.Component {
                     <Route path="/login" component={Login}></Route>
                     <Route path="/register" component={Register}></Route>
                     <Route path="/room/:id" component={Room}></Route>
+                    <Route path="/new/room" component={NewRoom}></Route>
                 </div>
             </BrowserRouter>
         );

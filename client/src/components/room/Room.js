@@ -8,12 +8,20 @@ import * as actions from '../../actions';
 import '../styles/room.css';
 
 class Room extends React.Component {
-    state = { room: null, isOwn: false };
+    state = { room: null, isOwn: false, check: false };
     async componentDidMount() {
         const id = this.props.match.params.id;
         const res = await axios.get(`/room/${id}`);
-        const res2 = await axios.get(`/isOwnRoom/${id}`);
-        this.setState({ room: res.data, isOwn: res2.data.isOwn });
+        this.setState({ room: res.data });
+    }
+    async componentDidUpdate() {
+        if (this.state.check === false) {
+            if (this.props.auth) {
+                const id = this.props.match.params.id;
+                const res = await axios.get(`/isOwnRoom/${id}`);
+                this.setState({ isOwn: res.data.isOwn, check: true });
+            }
+        }
     }
     renderTitle() {
         if (this.state.room) {
