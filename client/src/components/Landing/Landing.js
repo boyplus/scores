@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import axios from '../../axios/axios';
+import Loading from '../Loading';
 import RoomCard from './RoomCard';
 import * as actions from '../../actions';
 
@@ -13,6 +14,9 @@ class Landing extends React.Component {
     }
 
     renderRooms() {
+        if (this.state.rooms.length === 0) {
+            return <Loading></Loading>;
+        }
         const rooms = this.state.rooms.map((room) => {
             return (
                 <RoomCard

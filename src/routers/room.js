@@ -36,6 +36,21 @@ router.get('/api/myRooms', auth, async (req, res) => {
     }
 });
 
+router.get('/api/isOwnRoom/:id', auth, async (req, res) => {
+    try {
+        const _id = req.params.id;
+        const room = await Room.findById(_id);
+        const adminId = req.admin._id;
+        if (room.owners.includes(adminId)) {
+            res.send({ isOwn: true });
+        } else {
+            res.send({ isOwn: false });
+        }
+    } catch (err) {
+        res.status(500).send();
+    }
+});
+
 router.post('/api/room', auth, async (req, res) => {
     try {
         const room = new Room({

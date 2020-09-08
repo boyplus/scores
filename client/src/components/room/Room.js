@@ -1,32 +1,49 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import axios from '../../axios/axios';
 import Loading from '../Loading';
 import StudentCard from '../student/StudentCard';
-import { Link } from 'react-router-dom';
+import * as actions from '../../actions';
 import '../styles/room.css';
 
 class Room extends React.Component {
-    state = { room: null };
+    state = { room: null, isOwn: false };
     async componentDidMount() {
         const id = this.props.match.params.id;
         const res = await axios.get(`/room/${id}`);
-        this.setState({ room: res.data });
+        const res2 = await axios.get(`/isOwnRoom/${id}`);
+        this.setState({ room: res.data, isOwn: res2.data.isOwn });
     }
     renderTitle() {
         if (this.state.room) {
+            let editing = null;
+            if (this.state.isOwn) {
+                editing = (
+                    <div style={{ marginLeft: '10px' }}>
+                        <i className="edit icon"></i>
+                    </div>
+                );
+            }
             return (
-                <di id="roomTitle">
+                <div id="roomTitle">
                     <div>
                         <Link to="/">
                             <h2>Rooms&nbsp;>>&nbsp;</h2>
                         </Link>
                     </div>
-                    <div>
-                        <h1 style={{ fontWeight: 'bold' }}>
+                    <div
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <h1 style={{ fontWeight: 'bold', margin: '0' }}>
                             &nbsp;{this.state.room.name}
                         </h1>
+                        {editing}
                     </div>
-                </di>
+                </div>
             );
         } else {
             return <Loading></Loading>;
@@ -55,4 +72,10 @@ class Room extends React.Component {
     }
 }
 
-export default Room;
+const mapStateToProps = (state) => {
+    return {
+        auth: state.auth,
+    };
+};
+
+export default connect(mapStateToProps, actions)(Room);
