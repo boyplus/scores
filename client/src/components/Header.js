@@ -36,7 +36,7 @@ class Header extends React.Component {
                         <i className="users icon"></i> Students
                     </Link>
 
-                    <Link className="link" onClick={() => this.logout()}>
+                    <Link to="/" className="link" onClick={() => this.logout()}>
                         <i className="sign-out icon"></i> Logout
                     </Link>
                 </div>
@@ -47,9 +47,9 @@ class Header extends React.Component {
                     <Link to="/login" className={this.getClass('/login')}>
                         <i className="sign-in icon"></i> <span>Login</span>
                     </Link>
-                    <div className="link">
+                    <Link to="/register" className={this.getClass('/register')}>
                         <span>Register</span>
-                    </div>
+                    </Link>
                 </div>
             );
         }

@@ -7,6 +7,7 @@ import socketIOClient from 'socket.io-client';
 import * as actions from '../actions';
 import Header from './Header';
 import Login from './Login';
+import Register from './Register';
 import Landing from './Landing/Landing';
 import Room from './room/Room';
 import AdminRooms from './room/AdminRooms';
@@ -24,6 +25,7 @@ class App extends React.Component {
                     <Header></Header>
                     <Route exact path="/" component={Landing}></Route>
                     <Route path="/login" component={Login}></Route>
+                    <Route path="/register" component={Register}></Route>
                     <Route path="/room/:id" component={Room}></Route>
                     <Route path="/admin/rooms" component={AdminRooms}></Route>
                     <Route
