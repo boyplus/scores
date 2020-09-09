@@ -25,3 +25,12 @@
     margin: 0;
     margin-left: 15px;
 }
+
+.myIcon {
+    color: black;
+    transition: 0.25s;
+}
+.myIcon:hover {
+    color: grey;
+    transition: 0.25s;
+}

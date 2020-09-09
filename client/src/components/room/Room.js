@@ -11,9 +11,12 @@ class Room extends React.Component {
     state = { room: null, isOwn: false, check: false };
     async componentDidMount() {
         const id = this.props.match.params.id;
+        await this.fetchRoom(id);
+    }
+    fetchRoom = async (id) => {
         const res = await axios.get(`/room/${id}`);
         this.setState({ room: res.data });
-    }
+    };
     async componentDidUpdate() {
         if (this.state.check === false) {
             if (this.props.auth) {
@@ -62,7 +65,10 @@ class Room extends React.Component {
             const students = this.state.room.students.map((student) => {
                 return (
                     <StudentCard
+                        roomID={this.props.match.params.id}
                         student={student}
+                        isOwn={this.state.isOwn}
+                        updateRoom={this.fetchRoom}
                         key={student._id}
                     ></StudentCard>
                 );
