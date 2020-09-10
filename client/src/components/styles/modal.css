@@ -1,0 +1,30 @@
+.studentModal {
+    background: #fff;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 400px;
+    height: 300px;
+    box-shadow: 0 5px 10px 2px rgba(195, 192, 192, 0.5);
+    padding: 20px;
+    border-radius: 5px 5px;
+}
+
+.formStudent {
+    display: flex;
+    align-items: center;
+}
+
+.studentName {
+    width: 100%;
+    padding-left: 8px;
+}
+
+.studentActions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}

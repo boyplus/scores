@@ -41,11 +41,13 @@ class Header extends React.Component {
     }
     render() {
         return (
-            <div className="nav">
-                <Link to="/" className={this.getClass('/')}>
-                    Score Board
-                </Link>
-                <div>{this.renderProfile()}</div>
+            <div style={{ padding: '20px 0' }}>
+                <div className="nav">
+                    <Link to="/" className={this.getClass('/')}>
+                        Score Board
+                    </Link>
+                    <div>{this.renderProfile()}</div>
+                </div>
             </div>
         );
     }

@@ -1,8 +1,10 @@
 import React from 'react';
 import axios from '../../axios/axios';
+import ModalStudent from './ModalStudent';
 import '../styles/student.css';
 
 class StudentCard extends React.Component {
+    state = { displayModal: false };
     renderIcon() {
         if (this.props.isOwn) {
             return (
@@ -21,10 +23,16 @@ class StudentCard extends React.Component {
             return null;
         }
     }
+    closeModal() {
+        this.setState({ displayModal: false });
+    }
+    showModal() {
+        this.setState({ displayModal: true });
+    }
     renderEdit() {
         if (this.props.isOwn) {
             return (
-                <div className="editIcon">
+                <div className="editIcon" onClick={() => this.showModal()}>
                     <i className="edit icon"></i>
                 </div>
             );
@@ -43,6 +51,20 @@ class StudentCard extends React.Component {
         const id = this.props.student._id;
         await axios.patch(`/student/${id}`, body);
         this.props.updateRoom(this.props.roomID);
+    }
+    renderModal() {
+        if (this.state.displayModal) {
+            return (
+                <ModalStudent
+                    student={this.props.student}
+                    roomID={this.props.roomID}
+                    onDisMiss={() => this.closeModal()}
+                    updateRoom={this.props.updateRoom}
+                ></ModalStudent>
+            );
+        } else {
+            return null;
+        }
     }
     render() {
         return (
@@ -66,6 +88,7 @@ class StudentCard extends React.Component {
                         {this.renderIcon()}
                     </div>
                 </div>
+                {this.renderModal()}
             </div>
         );
     }
