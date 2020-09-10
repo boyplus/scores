@@ -28,3 +28,13 @@
     justify-content: flex-end;
     margin-top: 20px;
 }
+
+.settingHeader {
+    text-align: center;
+    margin: 0;
+}
+
+.closeIcon {
+    display: flex;
+    justify-content: flex-end;
+}

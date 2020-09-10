@@ -21,18 +21,22 @@ class ModalStudent extends React.Component {
     }
 
     async save() {
-        console.log('save')
         const { name, score, _id } = this.state;
         const body = { name, score };
-        const res = await axios.patch(`/student/${_id}`, body);
-        if (res.status === 200) {
+        try {
+            await axios.patch(`/student/${_id}`, body);
             await this.props.updateRoom(this.props.roomID);
             this.props.onDisMiss();
-        }
+        } catch (err) {}
     }
 
     async delete() {
-        console.log('delete');
+        const { _id } = this.state;
+        try {
+            await axios.delete(`/student/${_id}`);
+            await this.props.updateRoom(this.props.roomID);
+            this.props.onDisMiss();
+        } catch (err) {}
     }
 
     changeName(e) {
@@ -46,15 +50,18 @@ class ModalStudent extends React.Component {
             <OutsideClickHandler onOutsideClick={() => this.props.onDisMiss()}>
                 <div className="studentModal">
                     <div>
-                        <h1 style={{ textAlign: 'center' }}>
-                            Student Settings
-                        </h1>
+                        <div className="closeIcon">
+                            <i
+                                className="close icon"
+                                onClick={() => this.props.onDisMiss()}
+                            ></i>
+                        </div>
+                        <h1 className="settingHeader">Student Settings</h1>
                     </div>
                     <form
                         className="ui form"
                         onSubmit={(e) => {
                             e.preventDefault();
-                            
                         }}
                     >
                         <div className="field">
@@ -85,6 +92,7 @@ class ModalStudent extends React.Component {
                             onClick={() => this.delete()}
                             style={{ margin: '0 5px' }}
                         >
+                            <i className="trash alternate outline icon"></i>
                             Delete
                         </button>
                         <button
@@ -93,6 +101,7 @@ class ModalStudent extends React.Component {
                             onClick={(e) => this.save(e)}
                             style={{ margin: '0 5px' }}
                         >
+                            <i className="save outline icon"></i>
                             Save
                         </button>
                     </div>
