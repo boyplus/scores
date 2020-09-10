@@ -33,3 +33,15 @@
     padding-top: 10px;
     align-items: center;
 }
+
+.roomEdit {
+    color: black;
+    transition: 0.25s;
+    opacity: 1;
+}
+
+.roomEdit:hover {
+    opacity: 0.7;
+    transition: 0.25s;
+    cursor: pointer;
+}

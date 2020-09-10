@@ -4,11 +4,12 @@ import { connect } from 'react-redux';
 import axios from '../../axios/axios';
 import Loading from '../Loading';
 import StudentCard from '../student/StudentCard';
+import RoomConfig from './RoomConfig';
 import * as actions from '../../actions';
 import '../styles/room.css';
 
 class Room extends React.Component {
-    state = { room: null, isOwn: false, check: false };
+    state = { room: null, isOwn: false, check: false, config: false };
     async componentDidMount() {
         const id = this.props.match.params.id;
         await this.fetchRoom(id);
@@ -24,6 +25,11 @@ class Room extends React.Component {
                 const res = await axios.get(`/isOwnRoom/${id}`);
                 this.setState({ isOwn: res.data.isOwn, check: true });
             }
+        }
+    }
+    config() {
+        if (this.state.isOwn) {
+            this.setState({ config: true });
         }
     }
     renderTitle() {
@@ -48,6 +54,8 @@ class Room extends React.Component {
                             display: 'flex',
                             alignItems: 'center',
                         }}
+                        className="roomEdit"
+                        onClick={() => this.config()}
                     >
                         <h1 style={{ fontWeight: 'bold', margin: '0' }}>
                             &nbsp;{this.state.room.name}
@@ -58,6 +66,14 @@ class Room extends React.Component {
             );
         } else {
             return <Loading></Loading>;
+        }
+    }
+    renderComponent() {
+        if (this.state.config) {
+            return <RoomConfig></RoomConfig>;
+        } else {
+            const students = this.renderStudent();
+            return students;
         }
     }
     renderStudent() {
@@ -73,7 +89,13 @@ class Room extends React.Component {
                     ></StudentCard>
                 );
             });
-            return <div className="row">{students}</div>;
+            const addStudent = this.renderAddStudent();
+            return (
+                <div>
+                    <div className="row">{students}</div>
+                    {addStudent}
+                </div>
+            );
         }
     }
     renderAddStudent() {
@@ -85,7 +107,7 @@ class Room extends React.Component {
                     style={{
                         display: 'flex',
                         justifyContent: 'flex-end',
-                        marginTop: '50px',
+                        margin: '50px 0',
                     }}
                 >
                     <Link to={path}>
@@ -103,8 +125,7 @@ class Room extends React.Component {
         return (
             <div>
                 {this.renderTitle()}
-                {this.renderStudent()}
-                {this.renderAddStudent()}
+                {this.renderComponent()}
             </div>
         );
     }

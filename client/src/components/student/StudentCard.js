@@ -8,13 +8,24 @@ class StudentCard extends React.Component {
             return (
                 <div style={{ fontSize: '23px' }}>
                     <i
-                        className="plus square icon myIcon"
+                        className="plus square outline icon myIcon"
                         onClick={() => this.inc()}
                     ></i>
                     <i
-                        className="minus square icon myIcon"
+                        className="minus square outline icon myIcon"
                         onClick={() => this.dec()}
                     ></i>
+                </div>
+            );
+        } else {
+            return null;
+        }
+    }
+    renderEdit() {
+        if (this.props.isOwn) {
+            return (
+                <div className="editIcon">
+                    <i className="edit icon"></i>
                 </div>
             );
         } else {
@@ -37,10 +48,11 @@ class StudentCard extends React.Component {
         return (
             <div className="col-lg-3 col-sm-6" style={{ padding: '20px' }}>
                 <div className="studentCard">
-                    <div>
-                        <h1 className="studentName">
+                    <div className="studentTitle">
+                        <h1 style={{ margin: '0' }}>
                             {this.props.student.name}
                         </h1>
+                        {this.renderEdit()}
                     </div>
                     <div
                         style={{

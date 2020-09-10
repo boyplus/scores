@@ -7,7 +7,6 @@ import axios from '../../axios/axios';
 class NewRoom extends React.Component {
     state = { name: '', nameErr: '' };
     componentDidMount() {
-        this.props.updateRoute(this.props.match.path);
         this.name.focus();
     }
     componentDidUpdate(prevProps, prevState) {
