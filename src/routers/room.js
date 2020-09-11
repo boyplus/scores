@@ -5,6 +5,7 @@ const Room = require('../models/Room');
 const Student = require('../models/Student');
 const auth = require('../middlewares/auth');
 const ownRoom = require('../middlewares/ownRoom');
+const Admin = require('../models/Admin');
 
 router.get('/api/allRooms', async (req, res) => {
     try {
@@ -15,11 +16,24 @@ router.get('/api/allRooms', async (req, res) => {
     }
 });
 
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+        await callback(array[index], index, array);
+    }
+}
+
 router.get('/api/room/:id', async (req, res) => {
     try {
         const _id = req.params.id;
         const room = await Room.findById(_id).lean();
         const students = await Student.find({ room: _id });
+        const detailedOwners = [];
+        await asyncForEach(room.owners, async (owner) => {
+            const detailedOwner = await Admin.findById(owner).lean();
+            const { _id, name, username } = detailedOwner;
+            detailedOwners.push({ _id, name, username });
+        });
+        room.detailedOwners = detailedOwners;
         room.students = students;
         res.send(room);
     } catch (err) {
@@ -86,6 +100,27 @@ router.patch('/api/room/:id', auth, ownRoom, async (req, res) => {
         res.send(req.room);
     } catch (err) {
         res.status(500).send(err);
+    }
+});
+
+router.delete('/api/room/:id/admin', auth, ownRoom, async (req, res) => {
+    try {
+        const { _id } = req.body;
+        if (
+            req.room.owners.length === 1 &&
+            _id === req.room.owners[0].toString()
+        ) {
+            return res
+                .status(400)
+                .send({ err: 'Room should has at least one admin!' });
+        }
+        req.room.owners = req.room.owners.filter((owner) => {
+            return owner.toString() !== _id;
+        });
+        await req.room.save();
+        res.send(req.room);
+    } catch (err) {
+        res.status(400).send();
     }
 });
 

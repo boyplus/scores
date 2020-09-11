@@ -45,3 +45,19 @@
     transition: 0.25s;
     cursor: pointer;
 }
+
+.ownerLabel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.roomConfigActions{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+
+.addOnwerButton:hover{
+    cursor: pointer;
+}

@@ -52,6 +52,15 @@ router.get('/api/admin/profile', auth, async (req, res) => {
     res.send(req.admin);
 });
 
+router.get('/api/admins', auth, async (req, res) => {
+    try {
+        const admins = await Admin.find();
+        res.send(admins);
+    } catch (err) {
+        res.status(500).send();
+    }
+});
+
 router.patch('/api/admin', auth, async (req, res) => {
     const updates = Object.keys(req.body);
     const allowUpdated = ['name', 'password'];

@@ -17,6 +17,7 @@ class Room extends React.Component {
     fetchRoom = async (id) => {
         const res = await axios.get(`/room/${id}`);
         this.setState({ room: res.data });
+        console.log('fetch complete');
     };
     async componentDidUpdate() {
         if (this.state.check === false) {
@@ -32,45 +33,54 @@ class Room extends React.Component {
             this.setState({ config: true });
         }
     }
+    closeConfig = () => {
+        this.setState({ config: false });
+    };
     renderTitle() {
-        if (this.state.room) {
-            let editing = null;
-            if (this.state.isOwn) {
-                editing = (
-                    <div style={{ marginLeft: '10px' }}>
-                        <i className="edit icon"></i>
-                    </div>
-                );
-            }
-            return (
-                <div id="roomTitle">
-                    <div>
-                        <Link to="/">
-                            <h2>Rooms&nbsp;>>&nbsp;</h2>
-                        </Link>
-                    </div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                        }}
-                        className="roomEdit"
-                        onClick={() => this.config()}
-                    >
-                        <h1 style={{ fontWeight: 'bold', margin: '0' }}>
-                            &nbsp;{this.state.room.name}
-                        </h1>
-                        {editing}
-                    </div>
-                </div>
-            );
-        } else {
+        if (!this.state.room) {
             return <Loading></Loading>;
         }
+        let editing = null;
+        if (this.state.isOwn) {
+            editing = (
+                <div style={{ marginLeft: '10px' }}>
+                    <i className="edit icon"></i>
+                </div>
+            );
+        }
+        return (
+            <div id="roomTitle">
+                <div>
+                    <Link to="/">
+                        <h2>Rooms&nbsp;>>&nbsp;</h2>
+                    </Link>
+                </div>
+                <div
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                    }}
+                    className="roomEdit"
+                    onClick={() => this.config()}
+                >
+                    <h1 style={{ fontWeight: 'bold', margin: '0' }}>
+                        &nbsp;{this.state.room.name}
+                    </h1>
+                    {editing}
+                </div>
+            </div>
+        );
     }
     renderComponent() {
-        if (this.state.config) {
-            return <RoomConfig></RoomConfig>;
+        if (this.state.config && this.state.isOwn) {
+            return (
+                <RoomConfig
+                    room={this.state.room}
+                    adminID={this.props.auth._id}
+                    updateRoom={this.fetchRoom}
+                    closeConfig={this.closeConfig}
+                ></RoomConfig>
+            );
         } else {
             const students = this.renderStudent();
             return students;

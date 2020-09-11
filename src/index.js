@@ -2,7 +2,6 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 require('./db/mongoose');
 const http = require('http');
-const socketIo = require('socket.io');
 const adminRouter = require('./routers/admin');
 const roomRouter = require('./routers/room');
 const studentRouter = require('./routers/student');
@@ -15,26 +14,6 @@ app.use(roomRouter);
 app.use(studentRouter);
 
 const server = http.createServer(app);
-
-// const io = socketIo(server);
-
-// io.on('connection', (socket) => {
-//     console.log('New client connected');
-//     socket.on('disconnect', () => {
-//         console.log('Client disconnected');
-//     });
-
-//     socket.on('joinRoom', (data) => {
-//         const { room, user } = data;
-//         console.log('user ', user, ' join room ', room);
-//         socket.join(room);
-//     });
-
-//     socket.on('increase', (data) => {
-//         const { room, student } = data;
-//         io.to(room).emit('newNumber', { room, student });
-//     });
-// });
 
 if (process.env.NODE_ENV === 'production') {
     console.log('Start node server in production');
