@@ -52,12 +52,12 @@
     align-items: center;
 }
 
-.roomConfigActions{
+.roomConfigActions {
     display: flex;
     justify-content: space-between;
     margin-top: 50px;
 }
 
-.addOnwerButton:hover{
+.addOnwerButton:hover {
     cursor: pointer;
 }

@@ -41,6 +41,24 @@ router.get('/api/room/:id', async (req, res) => {
     }
 });
 
+router.get('/api/room/:id/otherAdmin', auth, ownRoom, async (req, res) => {
+    try {
+        console.log(req.room);
+        const allAdmins = await Admin.find({}).lean();
+        const roomAdmins = req.room.owners;
+        const otherAdmins = allAdmins.filter((admin) => {
+            return !roomAdmins.includes(admin._id);
+        });
+        const sentAdmins = [];
+        otherAdmins.forEach(({ _id, name, username }) => {
+            sentAdmins.push({ _id, name, username });
+        });
+        res.send(sentAdmins);
+    } catch (err) {
+        res.status(400).send();
+    }
+});
+
 router.get('/api/myRooms', auth, async (req, res) => {
     try {
         const rooms = await Room.find({ owners: req.admin._id });

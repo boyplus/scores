@@ -2,11 +2,18 @@ import React from 'react';
 import OwnerField from './OwnerField';
 
 import '../styles/room.css';
+import AddOwnerModal from './AddOwnerModal';
 
 class RoomConfig extends React.Component {
-    state = { name: '' };
+    state = { name: '', displayModal: false };
     changeName(e) {
         this.setState({ name: e.target.value });
+    }
+    closeModal = () => {
+        this.setState({ displayModal: false });
+    };
+    openAddModal() {
+        this.setState({ displayModal: true });
     }
     renderOwners() {
         const owners = this.props.room.detailedOwners;
@@ -20,22 +27,38 @@ class RoomConfig extends React.Component {
             );
         });
         return (
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                 {ownerJsx}
-                <div className="ui blue large label addOnwerButton">
-                    <div className="ownerLabel">
-                        <h4 style={{ margin: '0' }}>Add new Owner</h4>
+                <div style={{ padding: '0 7px 7px 0' }}>
+                    <div className="ui blue large label addOnwerButton">
+                        <div
+                            className="ownerLabel"
+                            onClick={() => this.openAddModal()}
+                        >
+                            <h4 style={{ margin: '0' }}>Add new Owner</h4>
+                        </div>
                     </div>
                 </div>
             </div>
         );
     }
+    renderModal() {
+        if (this.state.displayModal) {
+            return (
+                <AddOwnerModal
+                    onDisMiss={() => this.closeModal()}
+                    owners={this.props.room.detailedOwners}
+                    roomID={this.props.room._id}
+                ></AddOwnerModal>
+            );
+        } else {
+            return null;
+        }
+    }
     async delete() {}
     async save() {}
     async back() {
-        await this.props.updateRoom(this.props.room._id);
         this.props.closeConfig();
-        console.log('close complete');
     }
     render() {
         return (
@@ -84,6 +107,7 @@ class RoomConfig extends React.Component {
                         </div>
                     </div>
                 </form>
+                {this.renderModal()}
             </div>
         );
     }

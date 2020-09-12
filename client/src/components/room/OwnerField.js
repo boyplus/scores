@@ -16,7 +16,7 @@ class OwnerField extends React.Component {
     }
     render() {
         return (
-            <div key={this.props.owner._id}>
+            <div style={{ padding: '0 7px 7px 0' }} key={this.props.owner._id}>
                 <div className="ui teal large label">
                     <div className="ownerLabel">
                         <h4 style={{ margin: '0' }}>{this.props.owner.name}</h4>
