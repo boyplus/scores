@@ -121,9 +121,9 @@ router.patch('/api/room/:id', auth, ownRoom, async (req, res) => {
     }
 });
 
-router.delete('/api/room/:id/admin', auth, ownRoom, async (req, res) => {
+router.delete('/api/room/:id/admin/:adminID', auth, ownRoom, async (req, res) => {
     try {
-        const { _id } = req.body;
+        const _id = req.params.adminID;
         if (
             req.room.owners.length === 1 &&
             _id === req.room.owners[0].toString()
@@ -136,6 +136,9 @@ router.delete('/api/room/:id/admin', auth, ownRoom, async (req, res) => {
             return owner.toString() !== _id;
         });
         await req.room.save();
+        console.log('Try to remove ', _id);
+        console.log('This is new room');
+        console.log(req.room);
         res.send(req.room);
     } catch (err) {
         res.status(400).send();

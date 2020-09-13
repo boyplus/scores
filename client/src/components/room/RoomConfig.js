@@ -1,11 +1,15 @@
 import React from 'react';
-import OwnerField from './OwnerField';
 
-import '../styles/room.css';
+import axios from '../../axios/axios';
+import OwnerField from './OwnerField';
 import AddOwnerModal from './AddOwnerModal';
+import '../styles/room.css';
 
 class RoomConfig extends React.Component {
-    state = { name: '', displayModal: false };
+    state = { name: '', displayModal: false, loading: false };
+    componentDidMount() {
+        this.setState({ name: this.props.room.name });
+    }
     changeName(e) {
         this.setState({ name: e.target.value });
     }
@@ -15,14 +19,19 @@ class RoomConfig extends React.Component {
     openAddModal() {
         this.setState({ displayModal: true });
     }
+    getDisabled() {
+        return this.state.loading ? 'disabled' : '';
+    }
     renderOwners() {
         const owners = this.props.room.detailedOwners;
         const ownerJsx = owners.map((owner) => {
             return (
                 <OwnerField
+                    roomID={this.props.room._id}
+                    adminID={this.props.adminID}
                     owner={owner}
                     key={owner._id}
-                    adminID={this.props.adminID}
+                    updateRoom={this.props.updateRoom}
                 ></OwnerField>
             );
         });
@@ -56,11 +65,24 @@ class RoomConfig extends React.Component {
             return null;
         }
     }
-    async delete() {}
-    async save() {}
+    async delete() {
+        this.setState({ loading: true });
+        // await axios.delete(`/room/${this.props.room._id}`);
+
+        this.setState({ loading: false });
+    }
+    async save() {
+        this.setState({ loading: true });
+        const body = { name: this.state.name };
+        await axios.patch(`/room/${this.props.room._id}`, body);
+        await this.props.updateRoom(this.props.room._id);
+        this.setState({ loading: false });
+        this.props.closeConfig();
+    }
     async back() {
         this.props.closeConfig();
     }
+
     render() {
         return (
             <div style={{ marginTop: '30px' }}>
@@ -69,7 +91,7 @@ class RoomConfig extends React.Component {
                         <label>Name</label>
                         <input
                             type="text"
-                            value={this.props.room.name}
+                            value={this.state.name}
                             onChange={(e) => this.changeName(e)}
                         ></input>
                     </div>
@@ -89,7 +111,7 @@ class RoomConfig extends React.Component {
                         </div>
                         <div>
                             <button
-                                className="ui red button"
+                                className={`ui red button ${this.getDisabled()}`}
                                 onClick={() => this.delete()}
                                 style={{ margin: '0 5px' }}
                             >
@@ -98,7 +120,7 @@ class RoomConfig extends React.Component {
                             </button>
                             <button
                                 type="submit"
-                                className="ui positive button"
+                                className={`ui positive button ${this.getDisabled()}`}
                                 onClick={(e) => this.save(e)}
                                 style={{ margin: '0 5px' }}
                             >

@@ -13,6 +13,7 @@ class Room extends React.Component {
     async componentDidMount() {
         const id = this.props.match.params.id;
         await this.fetchRoom(id);
+        console.log(this.props);
     }
     fetchRoom = async (id) => {
         const res = await axios.get(`/room/${id}`);
@@ -78,6 +79,7 @@ class Room extends React.Component {
                     adminID={this.props.auth._id}
                     updateRoom={this.fetchRoom}
                     closeConfig={this.closeConfig}
+                    history={this.props.history}
                 ></RoomConfig>
             );
         } else {

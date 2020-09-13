@@ -1,5 +1,6 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 require('./db/mongoose');
 const http = require('http');
 const adminRouter = require('./routers/admin');
@@ -9,6 +10,7 @@ const studentRouter = require('./routers/student');
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
+app.use(bodyParser.json());
 app.use(adminRouter);
 app.use(roomRouter);
 app.use(studentRouter);
