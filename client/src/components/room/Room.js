@@ -17,7 +17,6 @@ class Room extends React.Component {
     fetchRoom = async (id) => {
         const res = await axios.get(`/room/${id}`);
         this.setState({ room: res.data });
-        console.log('fetch complete');
     };
     async componentDidUpdate() {
         if (this.state.check === false) {

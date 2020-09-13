@@ -4,7 +4,13 @@ import * as actions from '../actions';
 import './styles/login.css';
 
 class Login extends React.Component {
-    state = { username: '', password: '', usernameErr: '', passwordErr: '' };
+    state = {
+        username: '',
+        password: '',
+        usernameErr: '',
+        passwordErr: '',
+        loading: false,
+    };
     componentDidMount() {
         this.props.updateRoute(this.props.match.path);
         this.username.focus();
@@ -38,21 +44,42 @@ class Login extends React.Component {
     canSubmit() {
         return (
             this.state.usernameErr.length === 0 &&
-            this.state.passwordErr.length === 0
+            this.state.passwordErr.length === 0 &&
+            this.state.username.length > 0 &&
+            this.state.password.length > 0
         );
     }
     async login(e) {
         e.preventDefault();
         this.validation();
         if (this.canSubmit()) {
+            this.setState({ loading: true });
             await this.props.login(
                 this.state.username,
                 this.state.password,
                 this.props.history
             );
-        } else {
+            this.setState({ loading: false });
         }
     }
+
+    renderLoginFailed() {
+        if (this.props.auth === 'failed') {
+            return (
+                <div className="errorText">
+                    Your username or password is wrong.
+                </div>
+            );
+        } else {
+            return null;
+        }
+    }
+
+    getDisabled() {
+        if (this.state.loading) return 'disabled';
+        return '';
+    }
+
     changeUsername(e) {
         this.setState({ username: e.target.value });
     }
@@ -92,6 +119,8 @@ class Login extends React.Component {
                             {this.state.passwordErr}
                         </div>
 
+                        {this.renderLoginFailed()}
+
                         <div
                             style={{
                                 display: 'flex',
@@ -100,7 +129,7 @@ class Login extends React.Component {
                             }}
                         >
                             <button
-                                className="ui primary button"
+                                className={`ui primary button ${this.getDisabled()}`}
                                 type="submit"
                                 onClick={(e) => this.login(e)}
                             >
@@ -114,4 +143,10 @@ class Login extends React.Component {
     }
 }
 
-export default connect(null, actions)(Login);
+const mapStateToProps = (state) => {
+    return {
+        auth: state.auth,
+    };
+};
+
+export default connect(mapStateToProps, actions)(Login);

@@ -9,7 +9,7 @@ import axios from '../../axios/axios';
 import '../styles/ownerModal.css';
 
 class AddOwnerModal extends React.Component {
-    state = { selected: 'Choose Admin', admins: [] };
+    state = { selected: null, admins: [], loading: false };
     async componentDidMount() {
         document.getElementById('root').style.filter = 'blur(8px)';
         document.getElementById('root').style.transition = '0.25s';
@@ -25,7 +25,15 @@ class AddOwnerModal extends React.Component {
         document.getElementById('root').style.transition = '0.25s';
     }
     getAdmin(e, value) {
-        console.log(value);
+        this.setState({ selected: value });
+    }
+    async save() {
+        const body = { owner: this.state.selected };
+        this.setState({ loading: true });
+        await axios.patch(`/room/${this.props.roomID}`, body);
+        await this.props.updateRoom(this.props.roomID);
+        this.setState({ loading: false });
+        this.props.onDisMiss();
     }
     renderSelect() {
         if (this.state.admins.length === 0) return <Loading></Loading>;
@@ -37,6 +45,32 @@ class AddOwnerModal extends React.Component {
                 options={this.state.admins}
                 onChange={(e, { value }) => this.getAdmin(e, value)}
             ></Dropdown>
+        );
+    }
+    getSaveClass() {
+        if (this.state.selected === null || this.state.loading)
+            return 'disabled';
+        return '';
+    }
+    renderAction() {
+        if (this.state.admins.length === 0) return null;
+        return (
+            <div
+                style={{
+                    marginTop: '20px',
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                }}
+            >
+                <button
+                    className={`ui positive button ${this.getSaveClass()}`}
+                    style={{ margin: '0 5px' }}
+                    onClick={(e) => this.save(e)}
+                >
+                    <i className="save outline icon"></i>
+                    Save
+                </button>
+            </div>
         );
     }
     render() {
@@ -57,22 +91,7 @@ class AddOwnerModal extends React.Component {
                         {this.renderSelect()}
                     </div>
 
-                    <div
-                        style={{
-                            marginTop: '20px',
-                            display: 'flex',
-                            justifyContent: 'flex-end',
-                        }}
-                    >
-                        <button
-                            className="ui positive button"
-                            onClick={(e) => this.save(e)}
-                            style={{ margin: '0 5px' }}
-                        >
-                            <i className="plus icon"></i>
-                            Add
-                        </button>
-                    </div>
+                    {this.renderAction()}
                 </div>
             </OutsideClickHandler>,
 

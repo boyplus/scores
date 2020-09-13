@@ -29,12 +29,12 @@ class RoomConfig extends React.Component {
         return (
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                 {ownerJsx}
-                <div style={{ padding: '0 7px 7px 0' }}>
+                <div
+                    style={{ padding: '0 7px 7px 0' }}
+                    onClick={() => this.openAddModal()}
+                >
                     <div className="ui blue large label addOnwerButton">
-                        <div
-                            className="ownerLabel"
-                            onClick={() => this.openAddModal()}
-                        >
+                        <div className="ownerLabel">
                             <h4 style={{ margin: '0' }}>Add new Owner</h4>
                         </div>
                     </div>
@@ -49,6 +49,7 @@ class RoomConfig extends React.Component {
                     onDisMiss={() => this.closeModal()}
                     owners={this.props.room.detailedOwners}
                     roomID={this.props.room._id}
+                    updateRoom={this.props.updateRoom}
                 ></AddOwnerModal>
             );
         } else {
