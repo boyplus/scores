@@ -67,9 +67,9 @@ class RoomConfig extends React.Component {
     }
     async delete() {
         this.setState({ loading: true });
-        // await axios.delete(`/room/${this.props.room._id}`);
-
+        await axios.delete(`/room/${this.props.room._id}`);
         this.setState({ loading: false });
+        this.props.history.push('/');
     }
     async save() {
         this.setState({ loading: true });
@@ -79,7 +79,7 @@ class RoomConfig extends React.Component {
         this.setState({ loading: false });
         this.props.closeConfig();
     }
-    async back() {
+    back() {
         this.props.closeConfig();
     }
 

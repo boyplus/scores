@@ -13,7 +13,6 @@ class Room extends React.Component {
     async componentDidMount() {
         const id = this.props.match.params.id;
         await this.fetchRoom(id);
-        console.log(this.props);
     }
     fetchRoom = async (id) => {
         const res = await axios.get(`/room/${id}`);
